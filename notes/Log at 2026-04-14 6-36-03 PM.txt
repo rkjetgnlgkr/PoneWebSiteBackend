@@ -1,0 +1,600 @@
+❯ claude
+╭─── Claude Code v2.1.107 ───────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                    │ Tips for getting started                                          │
+│                 Welcome back Ryan!                 │ Run /init to create a CLAUDE.md file with instructions for Claude │
+│                                                    │ ───────────────────────────────────────────────────────────────── │
+│                       ▐▛███▜▌                      │ Recent activity                                                   │
+│                      ▝▜█████▛▘                     │ No recent activity                                                │
+│                        ▘▘ ▝▝                       │                                                                   │
+│ Sonnet 4.6 · Claude Pro · rkjetgnlgkr@gmail.com's  │                                                                   │
+│ Organization                                       │                                                                   │
+│  ~/…/OneDrive-個人/PonePoneAI/PoneWebSiteBackend   │                                                                   │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+❯ 請幫我在這個目錄下執行
+  mvn spring-boot:run
+  幫我啟動後端的專案
+
+⏺ Bash(mvn spring-boot:run)
+  ⎿  Running in the background (↓ to manage)
+
+⏺ 已在背景啟動 mvn spring-boot:run，我會等待通知並告訴你啟動結果。
+
+⏺ Background command "Start Spring Boot backend project" failed with exit code 1
+
+  Read 1 file (ctrl+o to expand)
+
+⏺ 編譯失敗，有多個錯誤。問題主要是：
+  1. Result、LoginDto、User、PortfolioDto、PortfolioImage 等類缺少 getter/setter — 可能是 Lombok 注解未生效
+  2. LogAspect、GlobalExceptionHandler 缺少 log 變量 — 可能是 @Slf4j 注解未生效
+
+  讓我讀取這些文件來確認問題。
+
+  Read 2 files (ctrl+o to expand)
+
+⏺ 注解本身是正確的，問題在於 Lombok 沒有被正確處理。讓我查看 pom.xml。
+
+  Read 1 file (ctrl+o to expand)
+
+⏺ pom.xml 本身正確，讓我確認 Java 和 Maven 版本，看是否有版本兼容問題。
+
+⏺ Bash(java -version 2>&1 && mvn -version 2>&1)
+  ⎿  openjdk version "26" 2026-03-17
+     OpenJDK Runtime Environment (build 26+35-2893)
+     OpenJDK 64-Bit Server VM (build 26+35-2893, mixed mode, sharing)
+     … +5 lines (ctrl+o to expand)
+
+⏺ 找到問題了！系統使用的是 Java 25，但專案要求 Java 11。Lombok 的 annotation processing 在 Java 17+ 有已知問題，Java 25
+  更是完全不兼容。
+
+  先確認系統是否安裝了 Java 11：
+
+⏺ Bash(/usr/libexec/java_home -V 2>&1)
+  ⎿  Matching Java Virtual Machines (1):
+         26 (arm64) "Oracle Corporation" - "OpenJDK 26" /Users/xiashaopeng/Library/Java/JavaVirtualMachines/openjdk-26/Cont
+     ents/Home
+     /Users/xiashaopeng/Library/Java/JavaVirtualMachines/openjdk-26/Contents/Home
+
+⏺ 系統只安裝了 Java 26，但專案需要 Java 11。有兩個解決方案：
+
+  方案一（推薦）：安裝 Java 17（LTS），然後用它執行這個專案：
+
+  brew install openjdk@17
+
+  安裝完後，用以下命令執行：
+
+  JAVA_HOME=$(/usr/libexec/java_home -v 17) mvn spring-boot:run
+
+  方案二：更新 pom.xml 支援新 Java + 升級 Lombok 版本（需要修改多個設定）
+
+  你想採用哪個方案？如果你有 Homebrew，方案一最快，我可以直接幫你執行安裝指令。或者你可以在終端機輸入 ! brew install openjdk@17
+  來安裝。
+
+✻ Crunched for 39s
+
+❯ 請幫我執行方案一
+
+⏺ Bash(brew install openjdk@17)
+  ⎿  ✔︎ JSON API cask.jws.json
+     ✔︎ JSON API formula.jws.json
+     ✔︎ JSON API formula.jws.json
+     … +24 lines (ctrl+o to expand)
+  ⎿  (timeout 5m)
+
+⏺ Java 17 安裝成功！現在用 Java 17 啟動 Spring Boot：
+
+⏺ Bash(JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn spring-boot:run)
+  ⎿  Running in the background (↓ to manage)
+
+⏺ 已在背景以 Java 17 重新啟動，等待結果...
+
+✻ Worked for 1m 46s · 1 shell still running
+
+❯ 請問一下我執行init的指令的話是做什麼用的
+
+⏺ claude-code-guide(Claude Code /init command explanation)
+  ⎿  Done (6 tool uses · 20.9k tokens · 21s)
+  (ctrl+o to expand)
+
+⏺ /init 是 Claude Code 的初始化指令，主要功能是：
+
+  自動分析你的專案並產生 CLAUDE.md 檔案，這個檔案包含：
+  - 專案的 build / test 指令
+  - 架構概覽
+  - 程式碼規範與慣例
+  - 常用工作流程
+
+  用途：讓 Claude 在每次新對話開始時都能自動讀取這份文件，不需要每次重新解釋專案結構，保持跨 session 的一致性。
+
+  注意事項：
+  - 如果 CLAUDE.md 已存在，/init 不會覆蓋，而是建議改進內容
+  - 這個檔案可以納入版本控制（git commit），讓整個團隊共用
+  - 盡量保持在 200 行以內，避免消耗太多 token
+
+  如果你在這個 Spring Boot 專案下執行 /init，Claude 會自動偵測到 Maven、Spring Boot 設定，並把常用指令（如 mvn
+  spring-boot:run）記錄進去，之後就不需要每次重新說明。
+
+✻ Cogitated for 35s
+
+❯ /init
+
+⏺ 讓我先探索整個專案結構。
+
+  Searched for 1 pattern, read 11 files (ctrl+o to expand)
+
+⏺ 我已經收集了足夠的資訊，現在來建立 CLAUDE.md。
+
+⏺ Write(CLAUDE.md)
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ Create file
+ CLAUDE.md
+╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌
+   1 # CLAUDE.md
+   2
+   3 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+   4
+   5 ## Build & Run
+   6
+   7 **必須使用 Java 17**（系統預設為 Java 25/26，與 Lombok annotation processing 不相容）：
+   8
+   9 ```bash
+  10 # 啟動專案
+  11 JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn spring-boot:run
+  12
+  13 # 只編譯
+  14 JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn compile
+  15
+  16 # 打包
+  17 JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn package -DskipTests
+  18 ```
+  19
+  20 啟動後 API base URL 為 `http://localhost:8080/api`。
+  21
+  22 ## Architecture
+  23
+  24 **Spring Boot 2.7.18 / Java 11 target / MyBatis / MySQL**
+  25
+  26 請求流程：
+  27 ```
+  28 Request → JwtFilter → Controller → Service → Mapper (XML) → MySQL
+  29 ```
+  30
+  31 **JWT 認證**：`JwtFilter` 攔截所有請求，僅放行 `/auth/login` 與 `/api/files/**`。Token 放在 `Authorization: Bearer <toke
+     n>` header。
+  32
+  33 **回應格式**：所有 API 統一回傳 `Result<T>`（`code`, `message`, `data`），由 `GlobalExceptionHandler` 統一處理例外並包成
+     相同格式。
+  34
+  35 **模組職責**：
+  36 - `entity/` — 資料庫對應物件，全用 Lombok `@Data`
+  37 - `dto/` — 請求入參，附 Bean Validation 注解
+  38 - `vo/Result` — 統一回應包裝器
+  39 - `mapper/` — MyBatis 介面 + `resources/mapper/*.xml`（含 resultMap 做一對多組裝）
+  40 - `aspect/LogAspect` — AOP 記錄所有 controller 的入參與執行耗時
+  41
+  42 **Portfolio 一對多**：`Portfolio` 透過 MyBatis `<collection>` lazy select 組裝 `PortfolioImage` 列表，對應表為 `portfoli
+     os` + `portfolio_images`。
+  43
+  44 **檔案上傳**：存放於本地 `./uploads/`，透過 `WebConfig` 映射為靜態資源，對外路徑為 `/api/files/{filename}`，此路徑不需 J
+     WT。
+  45
+  46 ## 環境需求
+  47
+  48 - MySQL：`localhost:3306`，資料庫名 `pone_website`，帳號 `root`
+  49 - 密碼與 JWT secret 直接寫在 `application.yml`（開發環境）
+╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌
+ Do you want to create CLAUDE.md?
+   1. Yes
+ ❯ 2. Yes, allow all edits during this session (shift+tab)
+   3. No
+
+ Esc to cancel
+╭─── Claude Code v2.1.107 ───────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                    │ Tips for getting started                                          │
+│                 Welcome back Ryan!                 │ Run /init to create a CLAUDE.md file with instructions for Claude │
+│                                                    │ ───────────────────────────────────────────────────────────────── │
+│                       ▐▛███▜▌                      │ Recent activity                                                   │
+│                      ▝▜█████▛▘                     │ No recent activity                                                │
+│                        ▘▘ ▝▝                       │                                                                   │
+│ Sonnet 4.6 · Claude Pro · rkjetgnlgkr@gmail.com's  │                                                                   │
+│ Organization                                       │                                                                   │
+│  ~/…/OneDrive-個人/PonePoneAI/PoneWebSiteBackend   │                                                                   │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+❯ 請幫我在這個目錄下執行
+  mvn spring-boot:run
+  幫我啟動後端的專案
+
+⏺ Bash(mvn spring-boot:run)
+  ⎿  Running in the background (↓ to manage)
+
+⏺ 已在背景啟動 mvn spring-boot:run，我會等待通知並告訴你啟動結果。
+
+⏺ Background command "Start Spring Boot backend project" failed with exit code 1
+
+  Read 1 file (ctrl+o to expand)
+
+⏺ 編譯失敗，有多個錯誤。問題主要是：
+  1. Result、LoginDto、User、PortfolioDto、PortfolioImage 等類缺少 getter/setter — 可能是 Lombok 注解未生效
+  2. LogAspect、GlobalExceptionHandler 缺少 log 變量 — 可能是 @Slf4j 注解未生效
+
+  讓我讀取這些文件來確認問題。
+
+  Read 2 files (ctrl+o to expand)
+
+⏺ 注解本身是正確的，問題在於 Lombok 沒有被正確處理。讓我查看 pom.xml。
+
+  Read 1 file (ctrl+o to expand)
+
+⏺ pom.xml 本身正確，讓我確認 Java 和 Maven 版本，看是否有版本兼容問題。
+
+⏺ Bash(java -version 2>&1 && mvn -version 2>&1)
+  ⎿  openjdk version "26" 2026-03-17
+     OpenJDK Runtime Environment (build 26+35-2893)
+     OpenJDK 64-Bit Server VM (build 26+35-2893, mixed mode, sharing)
+     … +5 lines (ctrl+o to expand)
+
+⏺ 找到問題了！系統使用的是 Java 25，但專案要求 Java 11。Lombok 的 annotation processing 在 Java 17+ 有已知問題，Java 25
+  更是完全不兼容。
+
+  先確認系統是否安裝了 Java 11：
+
+⏺ Bash(/usr/libexec/java_home -V 2>&1)
+  ⎿  Matching Java Virtual Machines (1):
+         26 (arm64) "Oracle Corporation" - "OpenJDK 26" /Users/xiashaopeng/Library/Java/JavaVirtualMachines/openjdk-26/Cont
+     ents/Home
+     /Users/xiashaopeng/Library/Java/JavaVirtualMachines/openjdk-26/Contents/Home
+
+⏺ 系統只安裝了 Java 26，但專案需要 Java 11。有兩個解決方案：
+
+  方案一（推薦）：安裝 Java 17（LTS），然後用它執行這個專案：
+
+  brew install openjdk@17
+
+  安裝完後，用以下命令執行：
+
+  JAVA_HOME=$(/usr/libexec/java_home -v 17) mvn spring-boot:run
+
+  方案二：更新 pom.xml 支援新 Java + 升級 Lombok 版本（需要修改多個設定）
+
+  你想採用哪個方案？如果你有 Homebrew，方案一最快，我可以直接幫你執行安裝指令。或者你可以在終端機輸入 ! brew install openjdk@17
+  來安裝。
+
+✻ Crunched for 39s
+
+❯ 請幫我執行方案一
+
+⏺ Bash(brew install openjdk@17)
+  ⎿  ✔︎ JSON API cask.jws.json
+     ✔︎ JSON API formula.jws.json
+     ✔︎ JSON API formula.jws.json
+     … +24 lines (ctrl+o to expand)
+  ⎿  (timeout 5m)
+
+⏺ Java 17 安裝成功！現在用 Java 17 啟動 Spring Boot：
+
+⏺ Bash(JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn spring-boot:run)
+  ⎿  Running in the background (↓ to manage)
+
+⏺ 已在背景以 Java 17 重新啟動，等待結果...
+
+✻ Worked for 1m 46s · 1 shell still running
+
+❯ 請問一下我執行init的指令的話是做什麼用的
+
+⏺ claude-code-guide(Claude Code /init command explanation)
+  ⎿  Done (6 tool uses · 20.9k tokens · 21s)
+  (ctrl+o to expand)
+
+⏺ /init 是 Claude Code 的初始化指令，主要功能是：
+
+  自動分析你的專案並產生 CLAUDE.md 檔案，這個檔案包含：
+  - 專案的 build / test 指令
+  - 架構概覽
+  - 程式碼規範與慣例
+  - 常用工作流程
+
+  用途：讓 Claude 在每次新對話開始時都能自動讀取這份文件，不需要每次重新解釋專案結構，保持跨 session 的一致性。
+
+  注意事項：
+  - 如果 CLAUDE.md 已存在，/init 不會覆蓋，而是建議改進內容
+  - 這個檔案可以納入版本控制（git commit），讓整個團隊共用
+  - 盡量保持在 200 行以內，避免消耗太多 token
+
+  如果你在這個 Spring Boot 專案下執行 /init，Claude 會自動偵測到 Maven、Spring Boot 設定，並把常用指令（如 mvn
+  spring-boot:run）記錄進去，之後就不需要每次重新說明。
+
+✻ Cogitated for 35s
+
+❯ /init
+
+⏺ 讓我先探索整個專案結構。
+
+  Searched for 1 pattern, read 11 files (ctrl+o to expand)
+
+⏺ 我已經收集了足夠的資訊，現在來建立 CLAUDE.md。
+
+⏺ Write(CLAUDE.md)
+  ⎿  Wrote 49 lines to CLAUDE.md
+       1 # CLAUDE.md
+       2
+       3 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+       4
+       5 ## Build & Run
+       6
+       7 **必須使用 Java 17**（系統預設為 Java 25/26，與 Lombok annotation processing 不相容）：
+       8
+       9 ```bash
+      10 # 啟動專案
+     … +43 lines (ctrl+o to expand)
+
+⏺ CLAUDE.md 已建立，內容包含：
+
+  1. Build & Run 指令 — 特別標注必須用 Java 17，避免未來再踩同樣的坑
+  2. 架構概覽 — 請求流程、JWT 認證機制、統一回應格式
+  3. 模組職責 — entity / dto / mapper / aspect 各層的用途
+  4. Portfolio 一對多 — MyBatis XML 中 <collection> 的組裝方式
+  5. 環境需求 — MySQL 連線與檔案上傳路徑說明
+
+✻ Cogitated for 32s
+
+! JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn spring-boot:run
+  ⎿  Command was manually backgrounded by user with ID: bbpl6kd2i. Output is being written to:
+     /private/tmp/claude-501/-Users-xiashaopeng-Library-CloudStorage-OneDrive----PonePoneAI-PoneWebSiteBackend/b4a9ef7d-e84e-4b2
+     d-9428-5eecf44d508d/tasks/bbpl6kd2i.output
+
+! JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn spring-boot:run
+  ⎿  Parsed mapper file: 'file [/Users/xiashaopeng/Library/CloudStorage/OneDrive-個人/PonePoneAI/PoneWebSiteBackend/target/class
+     es/mapper/PortfolioMapper.xml]'
+     Parsed mapper file: 'file
+     [/Users/xiashaopeng/Library/CloudStorage/OneDrive-個人/PonePoneAI/PoneWebSiteBackend/target/classes/mapper/UserMapper.xml]'
+     +49 lines (4s)
+     (ctrl+b to run in background)
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏵⏵ accept edits on (shift+tab to cycle)
+╭─── Claude Code v2.1.107 ───────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                    │ Tips for getting started                                          │
+│                 Welcome back Ryan!                 │ Run /init to create a CLAUDE.md file with instructions for Claude │
+│                                                    │ ───────────────────────────────────────────────────────────────── │
+│                       ▐▛███▜▌                      │ Recent activity                                                   │
+│                      ▝▜█████▛▘                     │ No recent activity                                                │
+│                        ▘▘ ▝▝                       │                                                                   │
+│ Sonnet 4.6 · Claude Pro · rkjetgnlgkr@gmail.com's  │                                                                   │
+│ Organization                                       │                                                                   │
+│  ~/…/OneDrive-個人/PonePoneAI/PoneWebSiteBackend   │                                                                   │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+❯ 請幫我在這個目錄下執行
+  mvn spring-boot:run
+  幫我啟動後端的專案
+
+⏺ Bash(mvn spring-boot:run)
+  ⎿  Running in the background (↓ to manage)
+
+⏺ 已在背景啟動 mvn spring-boot:run，我會等待通知並告訴你啟動結果。
+
+⏺ Background command "Start Spring Boot backend project" failed with exit code 1
+
+  Read 1 file (ctrl+o to expand)
+
+⏺ 編譯失敗，有多個錯誤。問題主要是：
+  1. Result、LoginDto、User、PortfolioDto、PortfolioImage 等類缺少 getter/setter — 可能是 Lombok 注解未生效
+  2. LogAspect、GlobalExceptionHandler 缺少 log 變量 — 可能是 @Slf4j 注解未生效
+
+  讓我讀取這些文件來確認問題。
+
+  Read 2 files (ctrl+o to expand)
+
+⏺ 注解本身是正確的，問題在於 Lombok 沒有被正確處理。讓我查看 pom.xml。
+
+  Read 1 file (ctrl+o to expand)
+
+⏺ pom.xml 本身正確，讓我確認 Java 和 Maven 版本，看是否有版本兼容問題。
+
+⏺ Bash(java -version 2>&1 && mvn -version 2>&1)
+  ⎿  openjdk version "26" 2026-03-17
+     OpenJDK Runtime Environment (build 26+35-2893)
+     OpenJDK 64-Bit Server VM (build 26+35-2893, mixed mode, sharing)
+     … +5 lines (ctrl+o to expand)
+
+⏺ 找到問題了！系統使用的是 Java 25，但專案要求 Java 11。Lombok 的 annotation processing 在 Java 17+ 有已知問題，Java 25
+  更是完全不兼容。
+
+  先確認系統是否安裝了 Java 11：
+
+⏺ Bash(/usr/libexec/java_home -V 2>&1)
+  ⎿  Matching Java Virtual Machines (1):
+         26 (arm64) "Oracle Corporation" - "OpenJDK 26" /Users/xiashaopeng/Library/Java/JavaVirtualMachines/openjdk-26/Cont
+     ents/Home
+     /Users/xiashaopeng/Library/Java/JavaVirtualMachines/openjdk-26/Contents/Home
+
+⏺ 系統只安裝了 Java 26，但專案需要 Java 11。有兩個解決方案：
+
+  方案一（推薦）：安裝 Java 17（LTS），然後用它執行這個專案：
+
+  brew install openjdk@17
+
+  安裝完後，用以下命令執行：
+
+  JAVA_HOME=$(/usr/libexec/java_home -v 17) mvn spring-boot:run
+
+  方案二：更新 pom.xml 支援新 Java + 升級 Lombok 版本（需要修改多個設定）
+
+  你想採用哪個方案？如果你有 Homebrew，方案一最快，我可以直接幫你執行安裝指令。或者你可以在終端機輸入 ! brew install openjdk@17
+  來安裝。
+
+✻ Brewed for 39s
+
+❯ 請幫我執行方案一
+
+⏺ Bash(brew install openjdk@17)
+  ⎿  ✔︎ JSON API cask.jws.json
+     ✔︎ JSON API formula.jws.json
+     ✔︎ JSON API formula.jws.json
+     … +24 lines (ctrl+o to expand)
+  ⎿  (timeout 5m)
+
+⏺ Java 17 安裝成功！現在用 Java 17 啟動 Spring Boot：
+
+⏺ Bash(JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn spring-boot:run)
+  ⎿  Running in the background (↓ to manage)
+
+⏺ 已在背景以 Java 17 重新啟動，等待結果...
+
+✻ Crunched for 1m 46s
+
+❯ 請問一下我執行init的指令的話是做什麼用的
+
+⏺ claude-code-guide(Claude Code /init command explanation)
+  ⎿  Done (6 tool uses · 20.9k tokens · 21s)
+  (ctrl+o to expand)
+
+⏺ /init 是 Claude Code 的初始化指令，主要功能是：
+
+  自動分析你的專案並產生 CLAUDE.md 檔案，這個檔案包含：
+  - 專案的 build / test 指令
+  - 架構概覽
+  - 程式碼規範與慣例
+  - 常用工作流程
+
+  用途：讓 Claude 在每次新對話開始時都能自動讀取這份文件，不需要每次重新解釋專案結構，保持跨 session 的一致性。
+
+  注意事項：
+  - 如果 CLAUDE.md 已存在，/init 不會覆蓋，而是建議改進內容
+  - 這個檔案可以納入版本控制（git commit），讓整個團隊共用
+  - 盡量保持在 200 行以內，避免消耗太多 token
+
+  如果你在這個 Spring Boot 專案下執行 /init，Claude 會自動偵測到 Maven、Spring Boot 設定，並把常用指令（如 mvn
+  spring-boot:run）記錄進去，之後就不需要每次重新說明。
+
+✻ Brewed for 35s
+
+❯ /init
+
+⏺ 讓我先探索整個專案結構。
+
+  Searched for 1 pattern, read 11 files (ctrl+o to expand)
+
+⏺ 我已經收集了足夠的資訊，現在來建立 CLAUDE.md。
+
+⏺ Write(CLAUDE.md)
+  ⎿  Wrote 49 lines to CLAUDE.md
+       1 # CLAUDE.md
+       2
+       3 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+       4
+       5 ## Build & Run
+       6
+       7 **必須使用 Java 17**（系統預設為 Java 25/26，與 Lombok annotation processing 不相容）：
+       8
+       9 ```bash
+      10 # 啟動專案
+     … +43 lines (ctrl+o to expand)
+
+⏺ CLAUDE.md 已建立，內容包含：
+
+  1. Build & Run 指令 — 特別標注必須用 Java 17，避免未來再踩同樣的坑
+  2. 架構概覽 — 請求流程、JWT 認證機制、統一回應格式
+  3. 模組職責 — entity / dto / mapper / aspect 各層的用途
+  4. Portfolio 一對多 — MyBatis XML 中 <collection> 的組裝方式
+  5. 環境需求 — MySQL 連線與檔案上傳路徑說明
+
+✻ Sautéed for 32s
+
+! JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn spring-boot:run
+  ⎿  Command was manually backgrounded by user with ID: bbpl6kd2i. Output is being written to: /private/tmp/claude-501/-Use
+     rs-xiashaopeng-Library-CloudStorage-OneDrive----PonePoneAI-PoneWebSiteBackend/b4a9ef7d-e84e-4b2d-9428-5eecf44d508d/tas
+     ks/bbpl6kd2i.output
+
+! JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn spring-boot:run
+  ⎿  Command was manually backgrounded by user with ID: bdgbufpyv. Output is being written to: /private/tmp/claude-501/-Use
+     rs-xiashaopeng-Library-CloudStorage-OneDrive----PonePoneAI-PoneWebSiteBackend/b4a9ef7d-e84e-4b2d-9428-5eecf44d508d/tas
+     ks/bdgbufpyv.output
+
+! JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn spring-boot:run
+  ⎿  Command was manually backgrounded by user with ID: b3sd2my0a. Output is being written to:
+     /private/tmp/claude-501/-Users-xiashaopeng-Library-CloudStorage-OneDrive----PonePoneAI-PoneWebSiteBackend/b4a9ef7d-e84e-4b2
+     d-9428-5eecf44d508d/tasks/b3sd2my0a.output
+
+❯ 請問一下JwtFilter.doFilterInternal
+  這個方法是在什麼時候執行的
+  他是透過什麼樣的原理跟機制來去呼叫它執行的
+
+⏺ JwtFilter.doFilterInternal 的執行時機與原理
+
+  什麼時候執行？
+
+  每一個 HTTP 請求進來時都會執行，在到達 Controller 之前。
+
+  呼叫鏈（由外到內）
+
+  HTTP Request
+      ↓
+  Servlet Container (Tomcat)
+      ↓
+  CorsFilter（先處理跨域）
+      ↓
+  JwtFilter.doFilterInternal  ← 在這裡驗證 Token
+      ↓
+  DispatcherServlet
+      ↓
+  Controller
+
+  機制原理
+
+  1. 繼承 OncePerRequestFilter
+
+  public class JwtFilter extends OncePerRequestFilter
+
+  OncePerRequestFilter 是 Spring 提供的抽象類別，保證同一個請求只執行一次（避免 forward/include 時重複執行）。它實作了 Java
+  Servlet 規範的 javax.servlet.Filter 介面。
+
+  2. Spring 自動註冊
+
+  @Component  // ← 關鍵
+  public class JwtFilter extends OncePerRequestFilter
+
+  加上 @Component 後，Spring Boot 啟動時會自動偵測所有實作 Filter 的 Bean，並透過 FilterRegistrationBean 將它註冊到 Tomcat 的
+  Filter Chain 中。
+
+  3. Filter Chain 機制
+
+  filterChain.doFilter(request, response);  // 放行，交給下一個 Filter 或 Controller
+
+  Tomcat 維護一條 Filter Chain，每個 Filter 決定：
+  - 呼叫 filterChain.doFilter() → 放行，繼續往下走
+  - 不呼叫，直接寫 response → 攔截，請求到此為止
+
+  在你的 JwtFilter 中：
+  - Token 驗證通過 → 呼叫 filterChain.doFilter() 放行
+  - Token 無效或未提供 → 呼叫 writeUnauthorized() 直接回傳 401，不放行
+
+  整體流程圖
+
+  Tomcat 收到請求
+      │
+      ▼
+  JwtFilter.doFilterInternal()
+      ├─ 路徑是 /auth/login 或 /api/files/**?
+      │       ↓ Yes → filterChain.doFilter() → 放行
+      │
+      ├─ 有 Authorization Bearer header?
+      │       ↓ No → writeUnauthorized(401)，結束
+      │
+      ├─ Token 有效?
+      │       ↓ No → writeUnauthorized(401)，結束
+      │
+      └─ 全部通過 → filterChain.doFilter() → 到達 Controller
+
+● How is Claude doing this session? (optional)
+  1: Bad    2: Fine   3: Good   0: Dismiss
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏵⏵ accept edits on · 1 shell · ↓ to manage
+

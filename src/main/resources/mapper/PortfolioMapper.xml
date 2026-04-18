@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pone.website.mapper.PortfolioMapper">
+
+    <resultMap id="PortfolioResultMap" type="com.pone.website.entity.Portfolio">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="url" column="url"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <collection property="images" ofType="com.pone.website.entity.PortfolioImage"
+                    select="findImagesByPortfolioId" column="id"/>
+    </resultMap>
+
+    <resultMap id="ImageResultMap" type="com.pone.website.entity.PortfolioImage">
+        <id property="id" column="id"/>
+        <result property="portfolioId" column="portfolio_id"/>
+        <result property="imagePath" column="image_path"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="PortfolioResultMap">
+        SELECT id, name, description, url, created_at, updated_at
+        FROM portfolios
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="findById" resultMap="PortfolioResultMap">
+        SELECT id, name, description, url, created_at, updated_at
+        FROM portfolios
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO portfolios (name, description, url, created_at, updated_at)
+        VALUES (#{name}, #{description}, #{url}, NOW(), NOW())
+    </insert>
+
+    <update id="update">
+        UPDATE portfolios
+        SET name        = #{name},
+            description = #{description},
+            url         = #{url},
+            updated_at  = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM portfolios WHERE id = #{id}
+    </delete>
+
+    <insert id="insertImage" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO portfolio_images (portfolio_id, image_path, created_at)
+        VALUES (#{portfolioId}, #{imagePath}, NOW())
+    </insert>
+
+    <delete id="deleteImagesByPortfolioId">
+        DELETE FROM portfolio_images WHERE portfolio_id = #{portfolioId}
+    </delete>
+
+    <select id="findImagesByPortfolioId" resultMap="ImageResultMap">
+        SELECT id, portfolio_id, image_path, created_at
+        FROM portfolio_images
+        WHERE portfolio_id = #{portfolioId}
+        ORDER BY id ASC
+    </select>
+
+</mapper>
