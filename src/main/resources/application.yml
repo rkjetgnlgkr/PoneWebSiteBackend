@@ -1,13 +1,13 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
   servlet:
     context-path: /api
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/pone_website?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Taipei
-    username: root
-    password: qwerty789
+    url: ${DB_URL:jdbc:mysql://localhost:3306/pone_website?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Taipei}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:qwerty789}
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
@@ -23,10 +23,10 @@ mybatis:
 
 # JWT 設定
 jwt:
-  secret: pone-website-secret-key-2026-super-long-string-for-security
+  secret: ${JWT_SECRET:pone-website-secret-key-2026-super-long-string-for-security}
   expiration: 86400000  # 24小時 (毫秒)
 
 # 檔案上傳路徑
 upload:
-  path: ./uploads/
+  path: ${UPLOAD_PATH:./uploads/}
   url-prefix: /api/files/
