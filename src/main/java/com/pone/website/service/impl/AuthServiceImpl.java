@@ -34,7 +34,7 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("帳號或密碼錯誤");
         }
 
-        String token = jwtUtil.generateToken(user.getUsername());
+        String token = jwtUtil.generateToken(user.getUsername(), user.getId());
         Map<String, String> result = new HashMap<>();
         result.put("token", token);
         result.put("username", user.getUsername());

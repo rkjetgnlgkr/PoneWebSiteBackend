@@ -6,6 +6,7 @@
 
     <resultMap id="PortfolioResultMap" type="com.pone.website.entity.Portfolio">
         <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
         <result property="name" column="name"/>
         <result property="description" column="description"/>
         <result property="url" column="url"/>
@@ -23,20 +24,21 @@
     </resultMap>
 
     <select id="findAll" resultMap="PortfolioResultMap">
-        SELECT id, name, description, url, created_at, updated_at
+        SELECT id, user_id, name, description, url, created_at, updated_at
         FROM portfolios
+        WHERE user_id = #{userId}
         ORDER BY created_at DESC
     </select>
 
     <select id="findById" resultMap="PortfolioResultMap">
-        SELECT id, name, description, url, created_at, updated_at
+        SELECT id, user_id, name, description, url, created_at, updated_at
         FROM portfolios
         WHERE id = #{id}
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO portfolios (name, description, url, created_at, updated_at)
-        VALUES (#{name}, #{description}, #{url}, NOW(), NOW())
+        INSERT INTO portfolios (user_id, name, description, url, created_at, updated_at)
+        VALUES (#{userId}, #{name}, #{description}, #{url}, NOW(), NOW())
     </insert>
 
     <update id="update">

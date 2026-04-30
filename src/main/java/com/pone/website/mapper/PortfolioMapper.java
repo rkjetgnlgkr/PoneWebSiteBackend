@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface PortfolioMapper {
 
-    List<Portfolio> findAll();
+    List<Portfolio> findAll(@Param("userId") Long userId);
 
     Portfolio findById(Long id);
 

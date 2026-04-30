@@ -19,43 +19,52 @@ public class PortfolioServiceImpl implements PortfolioService {
     private PortfolioMapper portfolioMapper;
 
     @Override
-    public List<Portfolio> findAll() {
-        return portfolioMapper.findAll();
+    public List<Portfolio> findAll(Long userId) {
+        return portfolioMapper.findAll(userId);
     }
 
     @Override
     @Transactional
-    public void add(PortfolioDto dto) {
+    public void add(PortfolioDto dto, Long userId) {
         Portfolio portfolio = new Portfolio();
+        portfolio.setUserId(userId);
         portfolio.setName(dto.getName());
         portfolio.setDescription(dto.getDescription());
         portfolio.setUrl(dto.getUrl());
         portfolioMapper.insert(portfolio);
 
-        // 儲存圖片
         saveImages(portfolio.getId(), dto.getImagePaths());
     }
 
     @Override
     @Transactional
-    public void update(Long id, PortfolioDto dto) {
+    public void update(Long id, PortfolioDto dto, Long userId) {
         Portfolio portfolio = portfolioMapper.findById(id);
         if (portfolio == null) {
             throw new RuntimeException("作品不存在");
+        }
+        if (!portfolio.getUserId().equals(userId)) {
+            throw new RuntimeException("無權限修改此作品");
         }
         portfolio.setName(dto.getName());
         portfolio.setDescription(dto.getDescription());
         portfolio.setUrl(dto.getUrl());
         portfolioMapper.update(portfolio);
 
-        // 重新設定圖片
         portfolioMapper.deleteImagesByPortfolioId(id);
         saveImages(id, dto.getImagePaths());
     }
 
     @Override
     @Transactional
-    public void delete(Long id) {
+    public void delete(Long id, Long userId) {
+        Portfolio portfolio = portfolioMapper.findById(id);
+        if (portfolio == null) {
+            throw new RuntimeException("作品不存在");
+        }
+        if (!portfolio.getUserId().equals(userId)) {
+            throw new RuntimeException("無權限刪除此作品");
+        }
         portfolioMapper.deleteImagesByPortfolioId(id);
         portfolioMapper.deleteById(id);
     }
