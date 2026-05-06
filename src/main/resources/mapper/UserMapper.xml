@@ -8,21 +8,38 @@
         <id property="id" column="id"/>
         <result property="username" column="username"/>
         <result property="nickname" column="nickname"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
         <result property="password" column="password"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
+    <resultMap id="UserListResultMap" type="com.pone.website.entity.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="nickname" column="nickname"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
     <select id="findByUsername" resultMap="UserResultMap">
-        SELECT id, username, nickname, password, created_at, updated_at
+        SELECT id, username, nickname, phone, email, password, created_at, updated_at
         FROM users
         WHERE username = #{username}
         LIMIT 1
     </select>
 
+    <select id="findAll" resultMap="UserListResultMap">
+        SELECT id, username, nickname, phone, email, created_at
+        FROM users
+        ORDER BY created_at DESC
+    </select>
+
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO users (username, nickname, password)
-        VALUES (#{username}, #{nickname}, #{password})
+        INSERT INTO users (username, nickname, phone, email, password)
+        VALUES (#{username}, #{nickname}, #{phone}, #{email}, #{password})
     </insert>
 
 </mapper>

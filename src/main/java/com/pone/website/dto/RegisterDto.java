@@ -13,6 +13,10 @@ public class RegisterDto {
 
     private String nickname;
 
+    private String phone;
+
+    private String email;
+
     @NotBlank(message = "密碼不能為空")
     @Size(min = 6, message = "密碼至少需要 6 個字元")
     private String password;
