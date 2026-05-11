@@ -10,6 +10,7 @@ public class User {
     private String nickname;
     private String phone;
     private String email;
+    private String googleId;
     private String password;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
