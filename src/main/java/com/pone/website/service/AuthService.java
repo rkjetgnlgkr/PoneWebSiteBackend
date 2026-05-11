@@ -7,4 +7,5 @@ import java.util.Map;
 public interface AuthService {
     Map<String, String> login(LoginDto loginDto);
     void register(RegisterDto registerDto);
+    Map<String, String> googleLogin(String idToken);
 }
