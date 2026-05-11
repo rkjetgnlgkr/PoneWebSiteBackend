@@ -76,7 +76,7 @@ public class AuthServiceImpl implements AuthService {
             user.setNickname(name.isEmpty() ? null : name);
             user.setEmail(email.isEmpty() ? null : email);
             user.setGoogleId(googleId);
-            user.setPassword(null);
+            user.setPassword(passwordEncoder.encode("aaaa1234"));
             userMapper.insertUser(user);
         }
 
