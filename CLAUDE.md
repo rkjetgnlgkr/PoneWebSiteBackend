@@ -34,7 +34,9 @@ JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn spring-boot:run
 Request → JwtFilter → Controller → Service → Mapper (XML) → MySQL
 ```
 
-**JWT 認證**：`JwtFilter` 攔截所有請求，僅放行 `/auth/login`、`/auth/register` 與 `/api/files/**`。Token 放在 `Authorization: Bearer <token>` header。
+**JWT 認證**：`JwtFilter` 攔截所有請求，僅放行 `/auth/login`、`/auth/register`、`/auth/google` 與 `/api/files/**`。Token 放在 `Authorization: Bearer <token>` header。
+
+**Google OAuth 登入**：`POST /auth/google` 接收前端傳入的 Google ID Token，呼叫 `https://oauth2.googleapis.com/tokeninfo` 驗證後，依 `google_id` 查詢或自動建立 User（username 取 email @ 前半段），最終回傳本系統 JWT。`users` 表有 `google_id VARCHAR(255) UNIQUE` 欄位。
 
 **回應格式**：所有 API 統一回傳 `Result<T>`（`code`, `message`, `data`），由 `GlobalExceptionHandler` 統一處理例外並包成相同格式。
 
