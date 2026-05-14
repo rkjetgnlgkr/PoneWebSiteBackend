@@ -51,6 +51,8 @@ Request → JwtFilter → Controller → Service → Mapper (XML) → MySQL
 
 **檔案上傳**：存放於本地 `./uploads/`，透過 `WebConfig` 映射為靜態資源，對外路徑為 `/api/files/{filename}`，此路徑不需 JWT。
 
+**版面設定**：`LayoutConfigController`（`/settings`）讀寫 `layout_config` 表。`GET /settings` 查無記錄時回傳預設值 `dark_star`（不寫 DB）；`PUT /settings` 執行 upsert。`LayoutConfigDto` 有 `@Pattern` 限制合法值：`dark_star | nature | terminal`。
+
 ## 環境需求
 
 - MySQL：`localhost:3306`，資料庫名 `pone_website`，帳號 `root`
