@@ -4,7 +4,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class UserSettings {
+public class LayoutConfig {
     private Long id;
     private Long userId;
     private String themeStyle;

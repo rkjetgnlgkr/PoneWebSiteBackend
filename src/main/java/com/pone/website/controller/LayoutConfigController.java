@@ -1,8 +1,8 @@
 package com.pone.website.controller;
 
-import com.pone.website.dto.UserSettingsDto;
-import com.pone.website.entity.UserSettings;
-import com.pone.website.service.UserSettingsService;
+import com.pone.website.dto.LayoutConfigDto;
+import com.pone.website.entity.LayoutConfig;
+import com.pone.website.service.LayoutConfigService;
 import com.pone.website.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -12,22 +12,22 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/settings")
-public class UserSettingsController {
+public class LayoutConfigController {
 
     @Autowired
-    private UserSettingsService userSettingsService;
+    private LayoutConfigService layoutConfigService;
 
     @GetMapping
-    public Result<UserSettings> get(HttpServletRequest request) {
+    public Result<LayoutConfig> get(HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
-        return Result.success(userSettingsService.getByUserId(userId));
+        return Result.success(layoutConfigService.getByUserId(userId));
     }
 
     @PutMapping
-    public Result<Void> save(@RequestBody @Validated UserSettingsDto dto,
+    public Result<Void> save(@RequestBody @Validated LayoutConfigDto dto,
                              HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
-        userSettingsService.save(userId, dto);
+        layoutConfigService.save(userId, dto);
         return Result.success();
     }
 }
