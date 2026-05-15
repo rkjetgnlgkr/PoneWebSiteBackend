@@ -27,6 +27,9 @@ jwt:
   expiration: 86400000  # 24小時 (毫秒)
 
 # 檔案上傳路徑
+# UPLOAD_URL_PREFIX 在 Zeabur 生產環境設為管理後台完整 URL，例如：
+#   https://pone-backend-xsp.zeabur.app/api/files/
+# 這樣 DB 存的就是完整絕對路徑，前台可直接使用，不依賴 BACKEND_URL 設定
 upload:
   path: ${UPLOAD_PATH:./uploads/}
-  url-prefix: /api/files/
+  url-prefix: ${UPLOAD_URL_PREFIX:/api/files/}
