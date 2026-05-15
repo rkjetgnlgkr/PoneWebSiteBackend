@@ -12,6 +12,10 @@
         <result property="email" column="email"/>
         <result property="googleId" column="google_id"/>
         <result property="password" column="password"/>
+        <result property="title" column="title"/>
+        <result property="bio" column="bio"/>
+        <result property="avatar" column="avatar"/>
+        <result property="location" column="location"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
@@ -27,21 +31,32 @@
     </resultMap>
 
     <select id="findByUsername" resultMap="UserResultMap">
-        SELECT id, username, nickname, phone, email, google_id, password, created_at, updated_at
+        SELECT id, username, nickname, phone, email, google_id, password, title, bio, avatar, location, created_at, updated_at
         FROM users
         WHERE username = #{username}
         LIMIT 1
     </select>
 
     <select id="findByGoogleId" resultMap="UserResultMap">
-        SELECT id, username, nickname, phone, email, google_id, password, created_at, updated_at
+        SELECT id, username, nickname, phone, email, google_id, password, title, bio, avatar, location, created_at, updated_at
         FROM users
         WHERE google_id = #{googleId}
         LIMIT 1
     </select>
 
+    <select id="findById" resultMap="UserResultMap">
+        SELECT id, username, nickname, phone, email, title, bio, avatar, location, created_at, updated_at
+        FROM users
+        WHERE id = #{id}
+        LIMIT 1
+    </select>
+
     <update id="updateGoogleId">
         UPDATE users SET google_id = #{googleId} WHERE id = #{id}
+    </update>
+
+    <update id="updateAvatar">
+        UPDATE users SET avatar = #{avatar} WHERE id = #{id}
     </update>
 
     <select id="findAll" resultMap="UserListResultMap">
