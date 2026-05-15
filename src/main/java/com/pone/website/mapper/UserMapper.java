@@ -16,5 +16,9 @@ public interface UserMapper {
 
     void updateGoogleId(@Param("id") Long id, @Param("googleId") String googleId);
 
+    void updateAvatar(@Param("id") Long id, @Param("avatar") String avatar);
+
+    User findById(Long id);
+
     List<User> findAll();
 }

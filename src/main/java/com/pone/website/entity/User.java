@@ -12,6 +12,10 @@ public class User {
     private String email;
     private String googleId;
     private String password;
+    private String title;
+    private String bio;
+    private String avatar;
+    private String location;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
