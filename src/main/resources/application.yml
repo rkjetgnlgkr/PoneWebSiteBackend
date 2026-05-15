@@ -27,6 +27,8 @@ jwt:
   expiration: 86400000  # 24小時 (毫秒)
 
 # 檔案上傳路徑
+# 生產環境設 UPLOAD_URL_PREFIX=https://<admin-backend-domain>/api/files/
+# 讓 DB 存完整絕對 URL，前台直接使用不需再拼接
 upload:
   path: ${UPLOAD_PATH:./uploads/}
-  url-prefix: /api/files/
+  url-prefix: ${UPLOAD_URL_PREFIX:/api/files/}
