@@ -53,6 +53,14 @@ Request → JwtFilter → Controller → Service → Mapper (XML) → MySQL
 
 **版面設定**：`LayoutConfigController`（`/settings`）讀寫 `layout_config` 表。`GET /settings` 查無記錄時回傳預設值 `dark_star`（不寫 DB）；`PUT /settings` 執行 upsert。`LayoutConfigDto` 有 `@Pattern` 限制合法值：`dark_star | nature | terminal`。
 
+**個人資料**：`UserProfileController`（`/profile`）
+- `GET /profile`：讀取登入使用者的完整 User 資料（含 `title`, `bio`, `avatar`, `location`）
+- `POST /profile/avatar`：上傳大頭貼圖片（multipart），呼叫 `FileService` 上傳後更新 `users.avatar`，回傳圖片路徑
+
+**User 實體欄位**：`title`, `bio`(TEXT), `avatar`, `location` 已加入 `User.java` 與 `UserMapper.xml`，`findByUsername` / `findByGoogleId` / `findById` 查詢皆含此四欄位。
+
+**檔案 URL 前綴**：`application.yml` 新增環境變數 `UPLOAD_URL_PREFIX`（預設 `/api/files/`）。生產環境可設為 `https://<admin-backend-domain>/api/files/`，讓 DB 存完整絕對 URL，前台直接使用無需再拼接。
+
 ## 環境需求
 
 - MySQL：`localhost:3306`，資料庫名 `pone_website`，帳號 `root`
