@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pone.website.mapper.WorkExperienceMapper">
+
+    <resultMap id="WorkExperienceResultMap" type="com.pone.website.entity.WorkExperience">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="company" column="company"/>
+        <result property="position" column="position"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="isCurrent" column="is_current"/>
+        <result property="description" column="description"/>
+        <result property="sortOrder" column="sort_order"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="WorkExperienceResultMap">
+        SELECT id, user_id, company, position, start_date, end_date, is_current,
+               description, sort_order, created_at, updated_at
+        FROM work_experiences
+        WHERE user_id = #{userId}
+        ORDER BY sort_order ASC, start_date DESC
+    </select>
+
+    <select id="findById" resultMap="WorkExperienceResultMap">
+        SELECT id, user_id, company, position, start_date, end_date, is_current,
+               description, sort_order, created_at, updated_at
+        FROM work_experiences
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO work_experiences
+            (user_id, company, position, start_date, end_date, is_current, description, sort_order, created_at, updated_at)
+        VALUES
+            (#{userId}, #{company}, #{position}, #{startDate}, #{endDate}, #{isCurrent}, #{description}, #{sortOrder}, NOW(), NOW())
+    </insert>
+
+    <update id="update">
+        UPDATE work_experiences
+        SET company    = #{company},
+            position   = #{position},
+            start_date = #{startDate},
+            end_date   = #{endDate},
+            is_current = #{isCurrent},
+            description = #{description},
+            sort_order = #{sortOrder},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM work_experiences WHERE id = #{id}
+    </delete>
+
+</mapper>
