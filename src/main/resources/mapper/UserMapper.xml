@@ -11,6 +11,7 @@
         <result property="phone" column="phone"/>
         <result property="email" column="email"/>
         <result property="googleId" column="google_id"/>
+        <result property="lineId" column="line_id"/>
         <result property="password" column="password"/>
         <result property="title" column="title"/>
         <result property="bio" column="bio"/>
@@ -27,20 +28,28 @@
         <result property="phone" column="phone"/>
         <result property="email" column="email"/>
         <result property="googleId" column="google_id"/>
+        <result property="lineId" column="line_id"/>
         <result property="createdAt" column="created_at"/>
     </resultMap>
 
     <select id="findByUsername" resultMap="UserResultMap">
-        SELECT id, username, nickname, phone, email, google_id, password, title, bio, avatar, location, created_at, updated_at
+        SELECT id, username, nickname, phone, email, google_id, line_id, password, title, bio, avatar, location, created_at, updated_at
         FROM users
         WHERE username = #{username}
         LIMIT 1
     </select>
 
     <select id="findByGoogleId" resultMap="UserResultMap">
-        SELECT id, username, nickname, phone, email, google_id, password, title, bio, avatar, location, created_at, updated_at
+        SELECT id, username, nickname, phone, email, google_id, line_id, password, title, bio, avatar, location, created_at, updated_at
         FROM users
         WHERE google_id = #{googleId}
+        LIMIT 1
+    </select>
+
+    <select id="findByLineId" resultMap="UserResultMap">
+        SELECT id, username, nickname, phone, email, google_id, line_id, password, title, bio, avatar, location, created_at, updated_at
+        FROM users
+        WHERE line_id = #{lineId}
         LIMIT 1
     </select>
 
@@ -66,8 +75,8 @@
     </select>
 
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO users (username, nickname, phone, email, google_id, password)
-        VALUES (#{username}, #{nickname}, #{phone}, #{email}, #{googleId}, #{password})
+        INSERT INTO users (username, nickname, phone, email, google_id, line_id, password)
+        VALUES (#{username}, #{nickname}, #{phone}, #{email}, #{googleId}, #{lineId}, #{password})
     </insert>
 
 </mapper>

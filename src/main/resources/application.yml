@@ -32,3 +32,8 @@ jwt:
 upload:
   path: ${UPLOAD_PATH:./uploads/}
   url-prefix: ${UPLOAD_URL_PREFIX:/api/files/}
+
+# LINE Login 設定（需在 LINE Developers Console 建立 Login channel）
+line:
+  channel-id: ${LINE_CHANNEL_ID:}
+  channel-secret: ${LINE_CHANNEL_SECRET:}

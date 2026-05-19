@@ -12,6 +12,8 @@ public interface UserMapper {
 
     User findByGoogleId(String googleId);
 
+    User findByLineId(String lineId);
+
     void insertUser(User user);
 
     void updateGoogleId(@Param("id") Long id, @Param("googleId") String googleId);

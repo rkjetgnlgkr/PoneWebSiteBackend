@@ -11,6 +11,7 @@ public class User {
     private String phone;
     private String email;
     private String googleId;
+    private String lineId;
     private String password;
     private String title;
     private String bio;

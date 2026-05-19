@@ -1,6 +1,7 @@
 package com.pone.website.controller;
 
 import com.pone.website.dto.GoogleLoginDto;
+import com.pone.website.dto.LineLoginDto;
 import com.pone.website.dto.LoginDto;
 import com.pone.website.dto.RegisterDto;
 import com.pone.website.service.AuthService;
@@ -33,6 +34,12 @@ public class AuthController {
     @PostMapping("/google")
     public Result<Map<String, String>> googleLogin(@RequestBody @Validated GoogleLoginDto dto) {
         Map<String, String> data = authService.googleLogin(dto.getIdToken());
+        return Result.success(data);
+    }
+
+    @PostMapping("/line")
+    public Result<Map<String, String>> lineLogin(@RequestBody @Validated LineLoginDto dto) {
+        Map<String, String> data = authService.lineLogin(dto.getCode(), dto.getRedirectUri());
         return Result.success(data);
     }
 }
