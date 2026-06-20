@@ -40,7 +40,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // 放行登入、註冊介面及靜態檔案
         if (path.contains("/auth/login") || path.contains("/auth/register")
-                || path.contains("/auth/google") || path.startsWith("/api/files/")) {
+                || path.contains("/auth/google") || path.contains("/auth/line")
+                || path.startsWith("/api/files/")) {
             filterChain.doFilter(request, response);
             return;
         }
